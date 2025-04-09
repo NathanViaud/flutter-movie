@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
     final viewModel = Provider.of<ProductViewModel>(context);
 
     return Scaffold(
+      headers: [AppBar(title: const Text('Popular shows'))],
       child: Column(
         children: [
           Expanded(
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                 viewModel.page = value;
                 viewModel.fetchMovies();
               },
-              maxPages: 2,
+              maxPages: 1,
               showLabel: false,
               showSkipToLastPage: false,
             ),
