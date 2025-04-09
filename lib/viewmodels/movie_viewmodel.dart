@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import '../models/movie.dart';
 import '../services/api.dart';
 
@@ -33,6 +32,16 @@ class ProductViewModel extends ChangeNotifier {
     } finally {
       _loading = false;
       notifyListeners();
+    }
+  }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    try {
+      print(query);
+      return await ApiService().searchMovies(query);
+    } catch (e) {
+      print('Error searching movies: $e');
+      return [];
     }
   }
 }
