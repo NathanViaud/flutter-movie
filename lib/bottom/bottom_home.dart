@@ -1,6 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../views/home_page.dart';
-// import '../views/research_page.dart';
+import '../views/research_page.dart';
 import '../views/library_page.dart';
 import '../views/drawer_page.dart';
 
@@ -35,7 +35,7 @@ class BottomHome extends StatefulWidget {
 class _BottomHomeState extends State<BottomHome> {
   final List<Widget> pages = [
     HomePage(),
-    // ResearchPage(),
+    ResearchPage(),
     LibraryPage(),
     DrawerPage(),
   ];
