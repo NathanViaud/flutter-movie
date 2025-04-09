@@ -1,8 +1,15 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'bottom/bottom_home.dart';
+import 'viewmodels/movie_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ProductViewModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

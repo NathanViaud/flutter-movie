@@ -1,8 +1,8 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import '../pages/home_page.dart';
-import '../pages/explore_page.dart';
-import '../pages/library_page.dart';
-import '../pages/drawer_page.dart';
+import '../views/home_page.dart';
+import '../views/explore_page.dart';
+import '../views/library_page.dart';
+import '../views/drawer_page.dart';
 
 NavigationBarAlignment alignment = NavigationBarAlignment.spaceAround;
 bool expands = true;
