@@ -21,39 +21,62 @@ class _HomePageState extends State<HomePage> {
     final viewModel = Provider.of<ProductViewModel>(context);
 
     return Scaffold(
-      child:
-          viewModel.loading
-              ? Center(child: CircularProgressIndicator())
-              : viewModel.products.isEmpty
-              ? Center(child: Text('No popular shows found'))
-              : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 32.0,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: viewModel.products.length,
-                itemBuilder: (context, index) {
-                  final movie = viewModel.products[index];
-                  return CardImage(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(id: movie.id),
-                        ),
-                      );
-                    },
-                    image: SizedBox(
-                      width: double.infinity,
-                      child: Image.network(movie.imageThumbnailPath),
+      child: Column(
+        children: [
+          Expanded(
+            child:
+                viewModel.loading
+                    ? Center(child: CircularProgressIndicator())
+                    : viewModel.products.isEmpty
+                    ? Center(child: Text('No popular shows found'))
+                    : GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio:
+                            0.7, // Adjust this value based on your image ratio
+                      ),
+                      itemCount: viewModel.products.length,
+                      itemBuilder: (context, index) {
+                        final movie = viewModel.products[index];
+                        return CardImage(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(id: movie.id),
+                              ),
+                            );
+                          },
+                          image: SizedBox.expand(
+                            child: Image.network(
+                              movie.imageThumbnailPath,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(movie.name).h4(),
+                          subtitle: Text(movie.startDate).muted(),
+                        );
+                      },
                     ),
-                    title: Text(movie.name).h3(),
-                    subtitle: Text(movie.startDate).muted(),
-                  );
-                },
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8.0),
+            child: Pagination(
+              page: viewModel.page,
+              totalPages: viewModel.totalPages,
+              onPageChanged: (value) {
+                viewModel.page = value;
+                viewModel.fetchMovies();
+              },
+              maxPages: 2,
+              showLabel: false,
+              showSkipToLastPage: false,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
