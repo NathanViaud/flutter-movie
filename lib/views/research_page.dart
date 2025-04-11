@@ -58,37 +58,49 @@ class ResearchPageState extends State<ResearchPage> {
                 ? Center(child: CircularProgressIndicator())
                 : _searchResults == null || _searchResults!.isEmpty
                     ? Center(child: Text('No results found'))
-                    : GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 4.0,
-                          mainAxisSpacing: 16.0,
-                          childAspectRatio: 0.7, // Adjust this value based on your image ratio
-                        ),
+                    : ListView.builder(
                         itemCount: _searchResults?.length ?? 0,
                         itemBuilder: (context, index) {
                           final movie = _searchResults![index];
-                          return CardImage(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailPage(id: movie.id),
-                                ),
-                              );
-                            },
-                            image: SizedBox.expand(
-                              child: Image.network(
-                                movie.imageThumbnailPath,
-                                fit: BoxFit.cover,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0), // Ajustez la valeur selon vos besoins
+                            child: CardButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage(id: movie.id),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image.network(
+                                      movie.imageThumbnailPath,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8), // Espace entre l'image et le texte
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(movie.name),
+                                        Text(movie.startDate).muted(),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            title: Text(movie.name).h4(),
-                            subtitle: Text(movie.startDate).muted(),
                           );
-                        },
+                        }
                       ),
           ),
+          const SizedBox(height: 8), // Espace entre les cartes
         ],
       ),
     );
