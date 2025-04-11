@@ -22,6 +22,17 @@ class DetailPage extends StatelessWidget {
             return Center(child: Text('No details found'));
           } else {
             final details = snapshot.data!;
+
+            final Map<int, List<Episode>> episodesBySeason = {};
+            for (final episode in details.episodes) {
+              if (!episodesBySeason.containsKey(episode.season)) {
+                episodesBySeason[episode.season] = [];
+              }
+
+              episodesBySeason[episode.season]!.add(episode);
+            }
+            final seasons = episodesBySeason.keys.toList();
+
             return Scaffold(
               headers: [
                 AppBar(
@@ -38,7 +49,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ],
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: ListView(
                   children: [
                     Image.network(details.imagePath),
@@ -51,22 +62,42 @@ class DetailPage extends StatelessWidget {
                     Text('Genres: ${details.genres.join(', ')}').muted(),
                     SizedBox(height: 16),
                     Text('Episodes').h3(),
-                    ...details.episodes.map(
-                      (episode) => Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${episode.season}x${episode.episode} - ${episode.name}',
+                    Accordion(
+                      items: [
+                        ...seasons.map(
+                          (season) => AccordionItem(
+                            trigger: AccordionTrigger(
+                              child: Text('Season $season'),
                             ),
-                            Text(
-                              'Aired: ${episode.airDate.toString().split(' ')[0]}',
-                            ).muted(),
-                            Divider(),
-                          ],
+                            content: Column(
+                              spacing: 8,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...episodesBySeason[season]!.map(
+                                  (episode) => Card(
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${episode.episode} - ${episode.name}',
+                                          ),
+                                          Text(
+                                            'Aired: ${episode.airDate.toString().split(' ')[0]}',
+                                          ).muted(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
