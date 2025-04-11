@@ -1,8 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import '../views/home_page.dart';
 import '../views/research_page.dart';
-import '../views/library_page.dart';
-import '../views/drawer_page.dart';
 
 NavigationBarAlignment alignment = NavigationBarAlignment.spaceAround;
 bool expands = true;
@@ -33,12 +31,7 @@ class BottomHome extends StatefulWidget {
 }
 
 class _BottomHomeState extends State<BottomHome> {
-  final List<Widget> pages = [
-    HomePage(),
-    ResearchPage(),
-    LibraryPage(),
-    DrawerPage(),
-  ];
+  final List<Widget> pages = [HomePage(), ResearchPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +50,7 @@ class _BottomHomeState extends State<BottomHome> {
           index: selected,
           children: [
             buildButton('Home', BootstrapIcons.house),
-            // buildButton('Research', BootstrapIcons.search),
-            buildButton('Library', BootstrapIcons.musicNoteList),
-            buildButton('Profile', BootstrapIcons.person),
+            buildButton('Research', BootstrapIcons.search),
           ],
         ),
       ],
