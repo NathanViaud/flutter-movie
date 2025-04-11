@@ -34,4 +34,32 @@ class Movie {
       imageThumbnailPath: json['image_thumbnail_path'],
     );
   }
+
+  factory Movie.fromMap(Map<String, dynamic> map) {
+    return Movie(
+      id: map['id'],
+      name: map['name'],
+      permalink: map['permalink'],
+      startDate: map['startDate'],
+      endDate: map['endDate'],
+      country: map['country'],
+      network: map['network'],
+      status: map['status'],
+      imageThumbnailPath: map['imageThumbnailPath'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'permalink': permalink,
+      'startDate': startDate,
+      'endDate': endDate,
+      'country': country,
+      'network': network,
+      'status': status,
+      'imageThumbnailPath': imageThumbnailPath,
+    };
+  }
 }

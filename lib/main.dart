@@ -1,12 +1,16 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:provider/provider.dart';
 import 'bottom/bottom_home.dart';
 import 'viewmodels/movie_viewmodel.dart';
-import 'package:provider/provider.dart';
+import 'viewmodels/episode_viewmodel.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ProductViewModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ProductViewModel()),
+        ChangeNotifierProvider(create: (context) => EpisodeViewModel()),
+      ],
       child: MyApp(),
     ),
   );

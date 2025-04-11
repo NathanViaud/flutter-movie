@@ -2,6 +2,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:provider/provider.dart';
 import '../services/api.dart';
 import '../models/details.dart';
+import '../viewmodels/episode_viewmodel.dart';
 
 class DetailPage extends StatelessWidget {
   final int id;
@@ -52,7 +53,11 @@ class DetailPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: ListView(
                   children: [
-                    Image.network(details.imagePath),
+                    Image.network(
+                      details.imagePath,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                     Text(details.description).p(),
                     Text('Start Date: ${details.startDate}').muted(),
                     Text(
@@ -74,21 +79,74 @@ class DetailPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ...episodesBySeason[season]!.map(
-                                  (episode) => Card(
+                                  (episode) => CardButton(
+                                    onPressed: () {
+                                      final EpisodeViewModel episodeViewModel =
+                                          Provider.of<EpisodeViewModel>(
+                                            context,
+                                            listen: false,
+                                          );
+
+                                      episodeViewModel.toggleWatchedStatus(
+                                        details.id,
+                                        episode.season,
+                                        episode.episode,
+                                      );
+                                    },
                                     child: Container(
                                       width: double.infinity,
-                                      padding: EdgeInsets.all(0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${episode.episode} - ${episode.name}',
-                                          ),
-                                          Text(
-                                            'Aired: ${episode.airDate.toString().split(' ')[0]}',
-                                          ).muted(),
-                                        ],
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Builder(
+                                        builder: (context) {
+                                          final episodeViewModel =
+                                              Provider.of<EpisodeViewModel>(
+                                                context,
+                                              );
+                                          return FutureBuilder<bool>(
+                                            future: episodeViewModel
+                                                .isEpisodeWatched(
+                                                  details.id,
+                                                  episode.season,
+                                                  episode.episode,
+                                                ),
+                                            builder: (context, snapshot) {
+                                              final isWatched =
+                                                  snapshot.data ?? false;
+
+                                              return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          '${episode.episode} - ${episode.name}',
+                                                        ),
+                                                        Text(
+                                                          'Aired: ${episode.airDate.toString().split(' ')[0]}',
+                                                        ).muted(),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  isWatched
+                                                      ? Icon(
+                                                        LucideIcons.eye,
+                                                        color: Colors.green,
+                                                      )
+                                                      : Icon(
+                                                        LucideIcons.eyeOff,
+                                                        color: Colors.gray,
+                                                      ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
