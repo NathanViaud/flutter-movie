@@ -5,7 +5,7 @@ class Details extends Movie {
   final String? descriptionSource;
   final int? runtime;
   final String imagePath;
-  final String rating;
+  final dynamic rating;
   final int ratingCount;
   final List<String> genres;
   final List<String> pictures;
