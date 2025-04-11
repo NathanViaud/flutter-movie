@@ -60,11 +60,25 @@ class DetailPage extends StatelessWidget {
                     ),
                     Text(details.description).p(),
                     Text('Start Date: ${details.startDate}').muted(),
-                    Text(
-                      'Rating: ${details.rating} (${details.ratingCount} votes)',
-                    ).muted(),
                     Text('Runtime: ${details.runtime} minutes').muted(),
                     Text('Genres: ${details.genres.join(', ')}').muted(),
+                    StarRating(
+                      value:
+                          (details.rating is String
+                              ? (double.tryParse(
+                                    details.rating,
+                                  )?.clamp(0, 10) ??
+                                  0)
+                              : (details.rating is num
+                                  ? (details.rating as num).toDouble().clamp(
+                                    0,
+                                    10,
+                                  )
+                                  : 0)) /
+                          2,
+                      activeColor: Colors.amber,
+                    ),
+                    Text('(${details.ratingCount} votes)').muted(),
                     SizedBox(height: 16),
                     Text('Episodes').h3(),
                     Accordion(
